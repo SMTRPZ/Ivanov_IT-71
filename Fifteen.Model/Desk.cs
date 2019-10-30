@@ -1,4 +1,5 @@
 ﻿using Fifteen.BLL.Factories;
+using Fifteen.BLL.WinCheckers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace Fifteen.BLL
         private Cell[,] _desk;
         private Point emptyPosition;
         private IDeskFieldFactory _deskFieldFactory;
+        private IWinChecker _winChecker;
         public Desk(int size)
         {
             Size = size;
             _deskFieldFactory = new ConsoleDeskFieldGenerator();
+            _winChecker = new SimpleWinChecker();
         }
 
         public int?[,] GetDesk()
@@ -41,30 +44,14 @@ namespace Fifteen.BLL
             _desk = _deskFieldFactory.GenerateDeskField(Size);
             emptyPosition = new Point(Size - 1, Size - 1);
         }
+
+        public void SetWinner(IWinChecker winChecker)
+        {
+            _winChecker = winChecker;
+        }
         public bool IsInWinPosition()
         {
-            int previousNumber = -1;
-            var size = _desk.GetLength(0);
-            for (int i = 0; i < size; i++)
-                for (int j = 0; j < size; j++)
-                    if (_desk[i, j] != null)
-                    {
-                        if (i == 0 && j == 0)
-                        {
-                            previousNumber = _desk[i, j].Number;
-                        }
-                        else if (_desk[i, j].Number > previousNumber)
-                        {
-                            previousNumber = _desk[i, j].Number;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else if (i != size - 1 || j != size - 1)
-                        return false;
-            return true;
+            return _winChecker.IsDeskInWinState(_desk);
         }
 
         public bool MoveLeft()

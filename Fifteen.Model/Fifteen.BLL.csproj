@@ -41,12 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bonuses\BonusBase.cs" />
-    <Compile Include="Bonuses\RandomMovementsBonus.cs" />
+    <Compile Include="Commands\Bonuses\BonusBase.cs" />
+    <Compile Include="Commands\Bonuses\RandomMovementsBonus.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\MoveDownCommand.cs" />
     <Compile Include="Commands\MoveLeftCommand.cs" />
+    <Compile Include="Commands\MovementInitializers.cs" />
     <Compile Include="Commands\MoveRightCommand.cs" />
     <Compile Include="Commands\MoveUpCommand.cs" />
     <Compile Include="Desk.cs" />

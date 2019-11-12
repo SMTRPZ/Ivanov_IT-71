@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 
 namespace Fifteen.BLL.Commands
 {
-    public class MoveDownCommand : ICommand
+    public class MoveDownCommand : Command
     {
-        private Desk desk;
-        public MoveDownCommand(Desk desk)
+        public MoveDownCommand(Desk desk) : base (desk)
         {
-            this.desk = desk;
         }
-        public bool Execute()
+
+        public override bool Execute()
         {
             return desk.MoveDown();
         }
 
-        public void Undo()
+        public override void Undo()
         {
             desk.MoveUp();
         }

@@ -31,23 +31,24 @@ namespace Fifteen
             while(!game.IsInWinPosition())
             {
                 var key = Console.ReadKey(true);
-                var button = key.Key;
-                if(button != ConsoleKey.UpArrow && button != ConsoleKey.DownArrow 
-                    && button != ConsoleKey.LeftArrow && button != ConsoleKey.RightArrow 
-                    && (button != ConsoleKey.Z && key.Modifiers != ConsoleModifiers.Control))
+                if (IsInputInvalid(key))
                 {
                     continue;
                 }
-                if (key.Key == ConsoleKey.UpArrow)
-                    game.Move(MoveDirection.Up);
-                else if (key.Key == ConsoleKey.RightArrow)
-                    game.Move(MoveDirection.Right);
-                else if (key.Key == ConsoleKey.DownArrow)
-                    game.Move(MoveDirection.Down);
-                else if (key.Key == ConsoleKey.LeftArrow)
-                    game.Move(MoveDirection.Left);
-                else if (key.Modifiers == ConsoleModifiers.Control && key.Key == ConsoleKey.Z)
+
+                //if (key.Key == ConsoleKey.UpArrow)
+                //    game.Move(MoveDirection.Up);
+                //else if (key.Key == ConsoleKey.RightArrow)
+                //    game.Move(MoveDirection.Right);
+                //else if (key.Key == ConsoleKey.DownArrow)
+                //    game.Move(MoveDirection.Down);
+                //else if (key.Key == ConsoleKey.LeftArrow)
+                //    game.Move(MoveDirection.Left);
+
+                if (key.Modifiers == ConsoleModifiers.Control && key.Key == ConsoleKey.Z)
                     game.UndoLastCommand();
+                else
+                    game.Move((MoveDirection)key.Key - 37);
 
                 if (key.Modifiers != ConsoleModifiers.Control && useBonuses && rnd.Next(100) < 20)
                 {
@@ -62,6 +63,14 @@ namespace Fifteen
             }
 
             _uInterface.ShowSuccessMessage("YOU WIN!!!");
+        }
+
+        private bool IsInputInvalid(ConsoleKeyInfo key)
+        {
+            var button = key.Key;
+            return button != ConsoleKey.UpArrow && button != ConsoleKey.DownArrow
+                    && button != ConsoleKey.LeftArrow && button != ConsoleKey.RightArrow
+                    && (button != ConsoleKey.Z && key.Modifiers != ConsoleModifiers.Control);
         }
 
         private void ShowDesk()

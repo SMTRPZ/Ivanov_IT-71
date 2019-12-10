@@ -6,19 +6,17 @@ using System.Threading.Tasks;
 
 namespace Fifteen.BLL.Commands
 {
-    public class MoveLeftCommand : ICommand
+    public class MoveLeftCommand : Command
     {
-        private Desk desk;
-        public MoveLeftCommand(Desk desk)
+        public MoveLeftCommand(Desk desk) : base (desk)
         {
-            this.desk = desk;
         }
-        public bool Execute()
+
+        public override bool Execute()
         {
             return desk.MoveLeft();
         }
-
-        public void Undo()
+        public override void Undo()
         {
             desk.MoveRight();
         }

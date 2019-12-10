@@ -14,7 +14,7 @@ namespace Fifteen.BLL
     public class Game
     {
         private static Game _game = new Game();
-        private Stack<ICommand> _commands;
+        private Stack<Command> _commands;
         private IDeskGenerator _deskGenerator;
         private readonly Random rnd;
 
@@ -36,29 +36,9 @@ namespace Fifteen.BLL
         {
             if (!isDeskGenerated)
                 return;
-            switch(direction)
-            {
-                case MoveDirection.Up:
-                    var upCommand = new MoveUpCommand(_desk);
-                    upCommand.Execute();
-                    _commands.Push(upCommand);
-                    break;
-                case MoveDirection.Right:
-                    var rightCommand = new MoveRightCommand(_desk);
-                    rightCommand.Execute();
-                    _commands.Push(rightCommand);
-                    break;
-                case MoveDirection.Down:
-                    var downCommand = new MoveDownCommand(_desk);
-                    downCommand.Execute();
-                    _commands.Push(downCommand);
-                    break;
-                case MoveDirection.Left:
-                    var leftCommand = new MoveLeftCommand(_desk);
-                    leftCommand.Execute();
-                    _commands.Push(leftCommand);
-                    break;
-            }
+            Command command = MovementInitializers.Initializers[direction].Invoke(_desk);
+            command.Execute();
+            _commands.Push(command);
         }
         public void UndoLastCommand()
         {
@@ -79,7 +59,7 @@ namespace Fifteen.BLL
             {
                 case 0:
                     var bonus = new RandomMovementsBonus(_desk, rnd.Next(50));
-                    bonus.Use();
+                    bonus.Execute();
                     _commands.Push(bonus);
                     break;
             }
@@ -100,7 +80,7 @@ namespace Fifteen.BLL
                 _desk = new Desk(size);
                 _desk.GenerateDesk();
                 _deskGenerator.MoveCells(_desk, iterationsCount);
-                _commands = new Stack<ICommand>();
+                _commands = new Stack<Command>();
                 isDeskGenerated = true;
             } 
         }

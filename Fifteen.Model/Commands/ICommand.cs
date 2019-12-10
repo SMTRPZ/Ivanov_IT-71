@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace Fifteen.BLL.Commands
 {
-    public interface ICommand
+    public abstract class Command
     {
-        bool Execute();
-        void Undo();
+        protected Desk desk;
+        public Command(Desk desk)
+        {
+            this.desk = desk;
+        }
+        public abstract bool Execute();
+        public abstract void Undo();
     }
 }
